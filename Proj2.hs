@@ -6,11 +6,11 @@ type Location  = (Int, Int)
 type GameState = Int
 
 toLocation :: String -> Maybe Location
-toLocation (x:xs) = Just ((ord x - ord 'A' + 1), (read xs :: Int))
+toLocation (x:xs) = Just ((ord (toLower x) - ord 'a' + 1), (read xs :: Int))
 toLocation _      = Nothing
 
 fromLocation :: Location -> String
-fromLocation (x, y) = (printf "%c%d" (chr (ord 'A' + x - 1)) y)
+fromLocation (x, y) = (printf "%c%d" (toUpper (chr (ord 'a' + x - 1))) y)
 
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
 feedback _ _ = (0, 0, 0)
