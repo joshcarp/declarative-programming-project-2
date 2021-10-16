@@ -16,9 +16,9 @@ feedback :: [Location] -> [Location] -> (Int,Int,Int)
 feedback _ _ = (0, 0, 0)
 
 initialGuess :: ([Location],GameState)
-initialGuess = ([Location 1 2],1)
+initialGuess = ([Location 1 1], 1)
 
 nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
-nextGuess _ _ = ([Location 1 2],1)
+nextGuess _ _ = ([Location 1 1], 1)
 
 
