@@ -1,17 +1,16 @@
 module Proj2 (Location, toLocation, fromLocation, feedback, GameState, initialGuess, nextGuess) where
 
 import Data.Char
-
+import Text.Printf
 data Location = Location Int Int deriving (Eq, Show)
-
 type GameState = Int
 
 toLocation :: String -> Maybe Location
-toLocation "(x:y:[])" = Nothing -- Just (Location (ord x - ord 'a') (digitToInt y))
+toLocation (x:xs) = Just (Location (ord x - ord 'a') (read xs :: Int))
 toLocation _ = Nothing
 
 fromLocation :: Location -> String
-fromLocation _ = "a"
+fromLocation (Location x y) = (printf "%c%d" (chr (ord 'a' + x)) y)
 
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
 feedback _ _ = (0, 0, 0)

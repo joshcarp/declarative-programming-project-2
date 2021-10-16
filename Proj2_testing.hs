@@ -4,15 +4,16 @@ import Text.Printf
 import Data.Char
 import Proj2
 
-prop :: Char -> Int -> Property
-prop x y =
+prop ::  Char -> Int -> Property
+prop x y =  elem x ['a' .. 'z'] &&
             y >= 0 &&
             isAlphaNum(x) &&
             isAsciiLower(x)
             ==>
-            toLocation(printf "%x%d" x y) >>= (\r -> fromLocation r)
-            === toLocation(printf "%x%d" x y) >>= (\r -> fromLocation r)
+            ((toLocation (printf "%c%d" x y)) >>= (\r -> return (fromLocation r)))
+            ===
+            Just (printf "%c%d" x y)
 
 
 main :: IO ()
-main = quickCheck (prop)
+main = quickCheck (verbose prop)
