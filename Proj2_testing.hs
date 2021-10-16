@@ -5,10 +5,7 @@ import Data.Char
 import Proj2
 
 prop ::  Char -> Int -> Property
-prop x y =  elem x ['a' .. 'z'] &&
-            y >= 0 &&
-            isAlphaNum(x) &&
-            isAsciiLower(x)
+prop x y =  elem x ['A' .. 'H']
             ==>
             ((toLocation (printf "%c%d" x y)) >>= (\r -> return (fromLocation r)))
             ===
@@ -16,4 +13,4 @@ prop x y =  elem x ['a' .. 'z'] &&
 
 
 main :: IO ()
-main = quickCheck (verbose prop)
+main = quickCheck (prop)
