@@ -14,12 +14,14 @@ fromLocation :: Location -> String
 fromLocation (x, y) = (printf "%c%d" (toUpper (chr (ord 'a' + x - 1))) y)
 
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
-feedback x [y1, y2, y3] = (zeroDist, oneDist, twoDist)
-                where zeroDist = sum [1 | minimum (distancex x y1) == 0] + sum [1 | minimum (distancex x y2) == 0] + sum [1 | minimum (distancex x y3) == 0]
-                      oneDist = sum [1 | minimum (distancex x y1) == 1] + sum [1 | minimum (distancex x y2) == 1] + sum [1 | minimum (distancex x y3) == 1]
-                      twoDist = sum [1 | minimum (distancex x y1) == 2] + sum [1 | minimum (distancex x y2) == 2] + sum [1 | minimum (distancex x y3) == 2]
+feedback x y = (distinctDistances x y 0, distinctDistances x y 1, distinctDistances x y 2)
 
-distancex a b = [distance c b | c <- a]
+distinctDistances :: (Integral t, Real a, Num p) => [(a, a)] -> [(a, a)] -> t -> p
+distinctDistances a [] n = 0
+distinctDistances a (b:bs) n =  sum [1 | minimum (allDistances b a) == n] + distinctDistances a bs n
+
+allDistances :: (Integral a1, Real a2) => (a2, a2) -> [(a2, a2)] -> [a1]
+allDistances a b = [distance c a | c <- b]
 
 distance :: (Real a, Real a, Integral b) => (a, a) -> (a, a) -> b
 distance (x1, y1) (x2, y2) = floor( sqrt (realToFrac(((realToFrac x1) - (realToFrac x2))^2 + ((realToFrac y1) - (realToFrac y2))^2)))
