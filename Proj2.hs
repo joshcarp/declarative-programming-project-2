@@ -4,7 +4,11 @@ import Text.Printf
 import qualified Data.Set as Set
 
 type Location  = (Int, Int)
-type GameState = Set.Set Location
+data GameState = GameState {
+                           valid :: Set.Set Location,
+                           lastGuess :: [Location],
+                           lastFeedback :: (Int, Int, Int)
+                           }
 
 toLocation :: String -> Maybe Location
 toLocation (x:xs) = Just ((ord (toLower x) - ord 'a' + 1), (read xs :: Int))
@@ -15,10 +19,9 @@ mustToLocation x = case toLocation x of
                     Just y -> y
                     Nothing -> (-99, -99) :: Location
 
-
 fromLocation :: Location -> String
 fromLocation (x, y) = (printf "%c%d" (toUpper (chr (ord 'a' + x - 1))) y)
---
+
 up :: Location -> Location
 up (x, y) = (x, y - 1)
 
@@ -40,15 +43,10 @@ locationToInt (x, y) = (y * 8) - 8 + x
 radius :: Location -> Int -> Set.Set Location
 radius a y = Set.fromList [intToLocation(x) | x <- [1..8*4], (distance (intToLocation x) a) == y]
 
-{-
-X X X
-X X X
-X X X
--}
 
 intToLocation :: Int -> Location
 intToLocation x = ((((x-1) + 8 ) `rem` 8) + 1, ((( x -1 ) + 8) `div` 8))
---
+
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
 feedback x y = (distinctDistances x y 0, distinctDistances x y 1, distinctDistances x y 2)
 
@@ -65,17 +63,33 @@ distance (x1, y1) (x2, y2) = floor( sqrt (realToFrac(((realToFrac x1) - (realToF
 validLocations :: Location -> Location -> Set.Set Location
 validLocations a b = Set.fromList [intToLocation y | y <- [locationToInt a .. locationToInt b]]
 
-
 initialGuess :: ([Location],GameState)
-initialGuess = ([(1, 1), (1, 2), (1, 3)], validLocations (mustToLocation "A1") (mustToLocation "H4"))
+initialGuess = ([(1, 1), (1, 2), (1, 3)],  GameState{
+                                                     valid = validLocations (mustToLocation "A1") (mustToLocation "H4"),
+                                                     lastGuess = [],
+                                                     lastFeedback = (-1, -1, -1)
+                                                     })
+
 
 nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
 nextGuess (x, state) (3, 0, 0) = (x, state)
-nextGuess ([x, y, z], state) (0, _, _) = ([x, y, z], (Set.difference state (Set.fromList [x, y, z])))
-nextGuess ([x, y, z],  state) (zero, one, two) = ([], state)
+nextGuess ([x, y, z], state) (0, b, c) = ([x, y, z], GameState{
+                                                                valid = Set.difference (valid state) (Set.fromList [x, y, z]),
+                                                                lastGuess = [x, y, z],
+                                                                lastFeedback = (0, b, c)
+                                                                })
 
 
-{-
+encorporateFeedback :: ([Location],GameState) -> (Int,Int,Int) -> GameState
+encorporateFeedback (locs, state) (0, 0, 0) = GameState{
+                                                           valid = Set.difference (Set.difference (Set.difference (valid state) (radii locs 0)) (radii locs 1)) (radii locs 2),
+                                                           lastGuess = locs,
+                                                           lastFeedback = (0, 0, 0)
+                                                           }
+
+radii :: [Location] -> Int -> Set.Set Location
+radii [] y = Set.empty
+radii (x:xs) y = Set.union (radius x y) (radii xs y)
 
 
--}
+--findLocation :: ([Location],GameState) -> (Int, Int, Int) ->
