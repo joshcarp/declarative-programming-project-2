@@ -13,7 +13,9 @@ prop_abs n = n
 main :: IO ()
 main = testCheckLocation >>
        testToLocation >>
-       testDistance
+       testDistance >>
+       testDistancex >>
+       testDistancexx
 
 -- QuickCheck Tests
 testCheckLocation = quickCheck checkLocation
@@ -28,6 +30,27 @@ testToLocation = hspec $ do
           describe "testToLocation" $ do
             it "toLocation" $ do
               (toLocation "a2") `shouldBe` Just ((1, 2) :: Location)
+
+
+testDistancex = hspec $ do
+                        describe "testDistancexx" $ do
+                          it "distancex [(3, 3)] (3, 3) 0 == 1" $ do
+                            (distancex [(3, 3)] (3, 3) 0) `shouldBe` 1
+                          it "distancex [(3, 3)] (3, 4) 0 == 0" $ do
+                            (distancex [(3, 3)] (3, 4) 0) `shouldBe` 0
+                          it "distancex [(3, 3)] (3, 4) 1 == 1" $ do
+                            (distancex [(3, 3)] (3, 4) 1) `shouldBe` 1
+                          it "distancex [(3, 3)] (3, 4) 1 == 1" $ do
+                            (distancex [(3, 3), (6, 6)] (3, 4) 1) `shouldBe` 1
+
+testDistancexx = hspec $ do
+                        describe "testDistancex" $ do
+                          it "distancexx [(3, 3)] (3, 3) 0 == 1" $ do
+                            (distancexx [(3, 3)] [(3, 3)] 0) `shouldBe` 1
+                          it "distancexx [(3, 3)] (3, 4) 0 == 0" $ do
+                            (distancexx [(3, 3)] [(3, 4)] 0) `shouldBe` 0
+                          it "distancexx [(3, 3)] (3, 4) 1 == 1" $ do
+                            (distancexx [(3, 3)] [(3, 4)] 1) `shouldBe` 1
 
 {-
 Grid for distance tests
