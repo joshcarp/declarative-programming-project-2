@@ -12,7 +12,19 @@ toLocation _      = Nothing
 
 fromLocation :: Location -> String
 fromLocation (x, y) = (printf "%c%d" (toUpper (chr (ord 'a' + x - 1))) y)
+--
+up :: Location -> Location
+up (x, y) = (x, y - 1)
 
+down :: Location -> Location
+down (x, y) = (x, y + 1)
+
+left :: Location -> Location
+left (x, y) = (x - 1, y)
+
+right :: Location -> Location
+right (x, y) = (x + 1, y)
+--
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
 feedback x y = (distinctDistances x y 0, distinctDistances x y 1, distinctDistances x y 2)
 
@@ -27,9 +39,9 @@ distance :: (Real a, Real a, Integral b) => (a, a) -> (a, a) -> b
 distance (x1, y1) (x2, y2) = floor( sqrt (realToFrac(((realToFrac x1) - (realToFrac x2))^2 + ((realToFrac y1) - (realToFrac y2))^2)))
 
 initialGuess :: ([Location],GameState)
-initialGuess = ([(1, 1)], 1)
+initialGuess = ([(1, 1), (1, 1), (1, 1)], 1)
 
 nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
-nextGuess _ _ = ([(1, 1)], 1)
+nextGuess (_,  state) (zero, one, two) = ([], state)
 
 
