@@ -15,7 +15,8 @@ main = testCheckLocation >>
        testToLocation >>
        testDistance >>
        testDistancex >>
-       testDistancexx
+       testDistancexx >>
+       testFeedback
 
 -- QuickCheck Tests
 testCheckLocation = quickCheck checkLocation
@@ -26,6 +27,44 @@ checkLocation x y =   elem x ['A' .. 'H']
          === Just (printf "%c%d" x y)
 
 -- Unit Tests
+{-
+it "feedback" $ do
+feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B3"), (toloc "C3"), (toloc "H3")] `shouldBe` (0, 2, 1)
+it "feedback" $ do
+feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B1"), (toloc "A2"), (toloc "H3")] `shouldBe` (0, 2, 1)
+it "feedback" $ do
+feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B2"), (toloc "H2"), (toloc "H1")] `shouldBe` (2, 1, 0)
+it "feedback" $ do
+feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "A3"), (toloc "D2"), (toloc "H1")] `shouldBe` (1, 1, 0)
+it "feedback" $ do
+feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "H4"), (toloc "G3"), (toloc "H2")] `shouldBe` (0, 0, 0)
+it "feedback" $ do
+feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "D2"), (toloc "B3"), (toloc "A1")] `shouldBe` (3, 0, 0)
+
+-}
+
+toloc x = case toLocation x of
+                    Just y -> y
+                    Nothing -> (-1, -1) :: Location
+
+testFeedback = hspec $ do
+          describe "testFeedback" $ do
+            it "feedback" $ do
+              (feedback [(3, 3)] [(3, 3)]) `shouldBe` (1, 0, 0)
+            it "feedback" $ do
+                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B3"), (toloc "C3"), (toloc "H3")] `shouldBe` (0, 2, 1)
+            it "feedback" $ do
+                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B1"), (toloc "A2"), (toloc "H3")] `shouldBe` (0, 2, 1)
+            it "feedback" $ do
+                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B2"), (toloc "H2"), (toloc "H1")] `shouldBe` (2, 1, 0)
+            it "feedback" $ do
+                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "A3"), (toloc "D2"), (toloc "H1")] `shouldBe` (1, 1, 0)
+            it "feedback" $ do
+                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "H4"), (toloc "G3"), (toloc "H2")] `shouldBe` (0, 0, 0)
+            it "feedback" $ do
+                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "D2"), (toloc "B3"), (toloc "A1")] `shouldBe` (3, 0, 0)
+
+
 testToLocation = hspec $ do
           describe "testToLocation" $ do
             it "toLocation" $ do
