@@ -14,7 +14,12 @@ fromLocation :: Location -> String
 fromLocation (x, y) = (printf "%c%d" (toUpper (chr (ord 'a' + x - 1))) y)
 
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
-feedback x y = ((distancexx x y 0), (distancexx x y 1), (distancexx x y 2))
+feedback x y = (zeroDist, oneDist, twoDist)
+                where zeroDist = (distancexx x y 0)
+                      oneDist = (distancexx x y 1)
+                      twoDist = (distancexx x y 2)
+
+
 
 distancexx :: (Real a1, Integral a2) => [(a1, a1)] -> [(a1, a1)] -> a2 -> Int
 distancexx a b z = sum [distancex a c z | c <- b]

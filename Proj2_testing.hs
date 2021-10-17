@@ -45,7 +45,7 @@ feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "D2"), (toloc "B3"),
 
 toloc x = case toLocation x of
                     Just y -> y
-                    Nothing -> (-1, -1) :: Location
+                    Nothing -> (-99, -99) :: Location
 
 testFeedback = hspec $ do
           describe "testFeedback" $ do
@@ -88,8 +88,8 @@ testDistancexx = hspec $ do
                             (distancexx [(3, 3)] [(3, 3)] 0) `shouldBe` 1
                           it "distancexx [(3, 3)] (3, 4) 0 == 0" $ do
                             (distancexx [(3, 3)] [(3, 4)] 0) `shouldBe` 0
-                          it "distancexx [(3, 3)] (3, 4) 1 == 1" $ do
-                            (foobar [(3, 3) :: Location] ((3, 4):: Location) 1) `shouldBe` 2
+                          it "fooasdo" $ do
+                            (distancexx [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "D2"), (toloc "B3"), (toloc "A1")] 2) `shouldBe` 0
 
 {-
 Grid for distance tests
