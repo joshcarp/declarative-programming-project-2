@@ -14,34 +14,15 @@ fromLocation :: Location -> String
 fromLocation (x, y) = (printf "%c%d" (toUpper (chr (ord 'a' + x - 1))) y)
 
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
-feedback x y = (zeroDist, oneDist, twoDist)
-                where zeroDist = (distancexx x y 0)
-                      oneDist = (distancexx x y 1)
-                      twoDist = (distancexx x y 2)
+feedback x [y1, y2, y3] = (zeroDist, oneDist, twoDist)
+                where zeroDist = sum [1 | minimum (distancex x y1) == 0] + sum [1 | minimum (distancex x y2) == 0] + sum [1 | minimum (distancex x y3) == 0]
+                      oneDist = sum [1 | minimum (distancex x y1) == 1] + sum [1 | minimum (distancex x y2) == 1] + sum [1 | minimum (distancex x y3) == 1]
+                      twoDist = sum [1 | minimum (distancex x y1) == 2] + sum [1 | minimum (distancex x y2) == 2] + sum [1 | minimum (distancex x y3) == 2]
 
-
-
-distancexx :: (Real a1, Integral a2) => [(a1, a1)] -> [(a1, a1)] -> a2 -> Int
-distancexx a b z = sum [distancex a c z | c <- b]
-
-
-foobar :: (Num a1, Num a2, Num a1) => [(a1, a1)] -> (a1, a1) -> a2 -> Int
-foobar a b n = 2
-
-distancex :: (Real a1, Integral a2) => [(a1, a1)] -> (a1, a1) -> a2 -> Int
-distancex a b n = length [c | c <- a, (distance c b) == n ]
+distancex a b = [distance c b | c <- a]
 
 distance :: (Real a, Real a, Integral b) => (a, a) -> (a, a) -> b
 distance (x1, y1) (x2, y2) = floor( sqrt (realToFrac(((realToFrac x1) - (realToFrac x2))^2 + ((realToFrac y1) - (realToFrac y2))^2)))
-
-{-
-
-[]
-(0,0)
-0	1	2
-1	1	2
-2	2	2 (2, 2)
--}
 
 initialGuess :: ([Location],GameState)
 initialGuess = ([(1, 1)], 1)

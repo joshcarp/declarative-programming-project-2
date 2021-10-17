@@ -37,13 +37,23 @@ Here are some example ship locations, guesses, and the feedback provided by the 
 Locations	Guess	Feedback
 
 ```
-H1, B2, D3	B3, C3, H3	0, 2, 1
-H1, B2, D3	B1, A2, H3	0, 2, 1
-H1, B2, D3	B2, H2, H1	2, 1, 0
-A1, D2, B3	A3, D2, H1	1, 1, 0
-A1, D2, B3	H4, G3, H2	0, 0, 0
-A1, D2, B3	D2, B3, A1	3, 0, 0
+---------------------------------
+H1, B2, D3 | B3, C3, H3 | 0, 2, 1
+H1, B2, D3 | B1, A2, H3 | 0, 2, 1
+H1, B2, D3 | B2, H2, H1 | 2, 1, 0
+A1, D2, B3 | A3, D2, H1 | 1, 1, 0
+A1, D2, B3 | H4, G3, H2 | 0, 0, 0
+A1, D2, B3 | D2, B3, A1 | 3, 0, 0
+
+----------------
+ A B C D 
+1       
+2  O     
+3  X X O
+
 ```
+
+
 
 Here is a graphical depiction of the first example above, where ships are shown as S and guessed locations are shown as G:
 

@@ -11,12 +11,15 @@ prop_abs :: Int -> Int
 prop_abs n = n
 
 main :: IO ()
-main = testCheckLocation >>
-       testToLocation >>
-       testDistance >>
-       testDistancex >>
-       testDistancexx >>
-       testFeedback
+main = testFeedback
+-- testDistancexxx
+--        >>
+--       testCheckLocation >>
+--       testToLocation >>
+--       testDistance >>
+--       testDistancex >>
+--       testDistancexx >>
+--       testFeedback
 
 -- QuickCheck Tests
 testCheckLocation = quickCheck checkLocation
@@ -29,17 +32,17 @@ checkLocation x y =   elem x ['A' .. 'H']
 -- Unit Tests
 {-
 it "feedback" $ do
-feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B3"), (toloc "C3"), (toloc "H3")] `shouldBe` (0, 2, 1)
+feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")] [(toloc "B3"), (toloc "C3"), (toloc "H3")] `shouldBe` (0, 2, 1)
 it "feedback" $ do
-feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B1"), (toloc "A2"), (toloc "H3")] `shouldBe` (0, 2, 1)
+feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")] [(toloc "B1"), (toloc "A2"), (toloc "H3")] `shouldBe` (0, 2, 1)
 it "feedback" $ do
-feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B2"), (toloc "H2"), (toloc "H1")] `shouldBe` (2, 1, 0)
+feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")] [(toloc "B2"), (toloc "H2"), (toloc "H1")] `shouldBe` (2, 1, 0)
 it "feedback" $ do
-feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "A3"), (toloc "D2"), (toloc "H1")] `shouldBe` (1, 1, 0)
+feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")] [(toloc "A3"), (toloc "D2"), (toloc "H1")] `shouldBe` (1, 1, 0)
 it "feedback" $ do
-feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "H4"), (toloc "G3"), (toloc "H2")] `shouldBe` (0, 0, 0)
+feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")] [(toloc "H4"), (toloc "G3"), (toloc "H2")] `shouldBe` (0, 0, 0)
 it "feedback" $ do
-feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "D2"), (toloc "B3"), (toloc "A1")] `shouldBe` (3, 0, 0)
+feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")] [(toloc "D2"), (toloc "B3"), (toloc "A1")] `shouldBe` (3, 0, 0)
 
 -}
 
@@ -50,46 +53,23 @@ toloc x = case toLocation x of
 testFeedback = hspec $ do
           describe "testFeedback" $ do
             it "feedback" $ do
-              (feedback [(3, 3)] [(3, 3)]) `shouldBe` (1, 0, 0)
+                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")] [(toloc "B3"), (toloc "C3"), (toloc "H3")] `shouldBe` (0, 2, 1)
             it "feedback" $ do
-                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B3"), (toloc "C3"), (toloc "H3")] `shouldBe` (0, 2, 1)
+                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")] [(toloc "B1"), (toloc "A2"), (toloc "H3")] `shouldBe` (0, 2, 1)
             it "feedback" $ do
-                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B1"), (toloc "A2"), (toloc "H3")] `shouldBe` (0, 2, 1)
+                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")] [(toloc "B2"), (toloc "H2"), (toloc "H1")] `shouldBe` (2, 1, 0)
             it "feedback" $ do
-                feedback [(toloc "H1"), (toloc "B2"), (toloc "D3")]	[(toloc "B2"), (toloc "H2"), (toloc "H1")] `shouldBe` (2, 1, 0)
+                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")] [(toloc "A3"), (toloc "D2"), (toloc "H1")] `shouldBe` (1, 1, 0)
             it "feedback" $ do
-                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "A3"), (toloc "D2"), (toloc "H1")] `shouldBe` (1, 1, 0)
+                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")] [(toloc "H4"), (toloc "G3"), (toloc "H2")] `shouldBe` (0, 0, 0)
             it "feedback" $ do
-                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "H4"), (toloc "G3"), (toloc "H2")] `shouldBe` (0, 0, 0)
-            it "feedback" $ do
-                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "D2"), (toloc "B3"), (toloc "A1")] `shouldBe` (3, 0, 0)
+                feedback [(toloc "A1"), (toloc "D2"), (toloc "B3")] [(toloc "D2"), (toloc "B3"), (toloc "A1")] `shouldBe` (3, 0, 0)
 
 
 testToLocation = hspec $ do
           describe "testToLocation" $ do
             it "toLocation" $ do
               (toLocation "a2") `shouldBe` Just ((1, 2) :: Location)
-
-
-testDistancex = hspec $ do
-                        describe "testDistancexx" $ do
-                          it "distancex [(3, 3)] (3, 3) 0 == 1" $ do
-                            (distancex [(3, 3)] (3, 3) 0) `shouldBe` 1
-                          it "distancex [(3, 3)] (3, 4) 0 == 0" $ do
-                            (distancex [(3, 3)] (3, 4) 0) `shouldBe` 0
-                          it "distancex [(3, 3)] (3, 4) 1 == 1" $ do
-                            (distancex [(3, 3)] (3, 4) 1) `shouldBe` 1
-                          it "distancex [(3, 3)] (3, 4) 1 == 1" $ do
-                            (distancex [(3, 3), (6, 6)] (3, 4) 1) `shouldBe` 1
-
-testDistancexx = hspec $ do
-                        describe "testDistancex" $ do
-                          it "distancexx [(3, 3)] (3, 3) 0 == 1" $ do
-                            (distancexx [(3, 3)] [(3, 3)] 0) `shouldBe` 1
-                          it "distancexx [(3, 3)] (3, 4) 0 == 0" $ do
-                            (distancexx [(3, 3)] [(3, 4)] 0) `shouldBe` 0
-                          it "fooasdo" $ do
-                            (distancexx [(toloc "A1"), (toloc "D2"), (toloc "B3")]	[(toloc "D2"), (toloc "B3"), (toloc "A1")] 2) `shouldBe` 0
 
 {-
 Grid for distance tests
@@ -101,7 +81,12 @@ Grid for distance tests
 4 | 2  1  1  1  2
 5 | 2  2  2  2  2
 
+
+0 0 0
+0 o x
+0 0 o
 -}
+
 testDistance = hspec $ do
           describe "testDistance" $ do
             it "(3, 3) (1, 1) == 2" $ do
