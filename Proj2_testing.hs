@@ -50,7 +50,7 @@ testDistancexx = hspec $ do
                           it "distancexx [(3, 3)] (3, 4) 0 == 0" $ do
                             (distancexx [(3, 3)] [(3, 4)] 0) `shouldBe` 0
                           it "distancexx [(3, 3)] (3, 4) 1 == 1" $ do
-                            (distancexx [(3, 3)] [(3, 4)] 1) `shouldBe` 1
+                            (foobar [(3, 3) :: Location] ((3, 4):: Location) 1) `shouldBe` 2
 
 {-
 Grid for distance tests
