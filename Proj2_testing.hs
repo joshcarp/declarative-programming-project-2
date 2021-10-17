@@ -1,8 +1,8 @@
-module Main where
+module Test where
+import Proj2
 import Test.QuickCheck
 import Text.Printf
 import Data.Char
-import Proj2
 import Test.Hspec
 import Test.QuickCheck
 
@@ -12,7 +12,8 @@ prop_abs n = n
 
 main :: IO ()
 main = testCheckLocation >>
-       testLocation
+       testToLocation >>
+       testDistance
 
 -- QuickCheck Tests
 testCheckLocation = quickCheck checkLocation
@@ -23,7 +24,22 @@ checkLocation x y =   elem x ['A' .. 'H']
          === Just (printf "%c%d" x y)
 
 -- Unit Tests
-testLocation = hspec $ do
+testToLocation = hspec $ do
+          describe "testToLocation" $ do
+            it "toLocation" $ do
+              (toLocation "a2") `shouldBe` Just ((1, 2) :: Location)
+
+{-
+    1  2  3  4  5
+-------------------
+1 | 2  2  2  2  2
+2 | 2  1  1  1  2
+3 | 2  1  0  1  2
+4 | 2  1  1  1  2
+5 | 2  2  2  2  2
+
+-}
+testDistance = hspec $ do
           describe "Prelude.read" $ do
             it "can parse integers" $ do
-              (toLocation "a2") `shouldBe` Just ((1, 2) :: Location)
+              distance (3, 3) (3, 3) `shouldBe` 0

@@ -1,4 +1,4 @@
-module Proj2 (Location, toLocation, fromLocation, feedback, GameState, initialGuess, nextGuess) where
+module Proj2 where
 import Data.Char
 import Text.Printf
 import qualified Data.Set as Set
