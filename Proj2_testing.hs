@@ -15,7 +15,8 @@ main =
     testCheckLocation >>
     testToLocation >>
     testDistance >>
-    testFeedback
+    testFeedback >>
+    testCheckLocationToInt
 
 -- QuickCheck Tests
 testCheckLocation = quickCheck checkLocation
@@ -24,6 +25,13 @@ checkLocation ::  Char -> Int -> Property
 checkLocation x y =   elem x ['A' .. 'H']
          ==> ((toLocation (printf "%c%d" x y)) >>= (\r -> return (fromLocation r)))
          === Just (printf "%c%d" x y)
+
+
+testCheckLocationToInt = quickCheck (withMaxSuccess 100 checkLocationInt)
+
+checkLocationInt :: Int -> Property
+checkLocationInt x = x > 0 ==> locationToInt (intToLocation x) === x
+
 
 -- Unit Tests
 

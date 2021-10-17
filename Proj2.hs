@@ -24,6 +24,12 @@ left (x, y) = (x - 1, y)
 
 right :: Location -> Location
 right (x, y) = (x + 1, y)
+
+locationToInt :: Location -> Int
+locationToInt (x, y) = (y * 8) - 8 + x
+
+intToLocation :: Int -> Location
+intToLocation x = ((x + 8) `rem` 8, ((x + 8) `div` 8))
 --
 feedback :: [Location] -> [Location] -> (Int,Int,Int)
 feedback x y = (distinctDistances x y 0, distinctDistances x y 1, distinctDistances x y 2)
@@ -45,3 +51,7 @@ nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
 nextGuess (_,  state) (zero, one, two) = ([], state)
 
 
+{-
+
+
+-}
