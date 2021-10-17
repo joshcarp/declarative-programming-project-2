@@ -30,6 +30,7 @@ testToLocation = hspec $ do
               (toLocation "a2") `shouldBe` Just ((1, 2) :: Location)
 
 {-
+Grid for distance tests
     1  2  3  4  5
 -------------------
 1 | 2  2  2  2  2
@@ -40,6 +41,60 @@ testToLocation = hspec $ do
 
 -}
 testDistance = hspec $ do
-          describe "Prelude.read" $ do
-            it "can parse integers" $ do
-              distance (3, 3) (3, 3) `shouldBe` 0
+          describe "testDistance" $ do
+            it "(3, 3) (1, 1) == 2" $ do
+                distance (3, 3) (1, 1) `shouldBe` 2
+            it "(3, 3) (1, 2) == 2" $ do
+                distance (3, 3) (1, 2) `shouldBe` 2
+            it "(3, 3) (1, 3) == 2" $ do
+                distance (3, 3) (1, 3) `shouldBe` 2
+            it "(3, 3) (1, 4) == 2" $ do
+                distance (3, 3) (1, 4) `shouldBe` 2
+            it "(3, 3) (1, 5) == 2" $ do
+                distance (3, 3) (1, 5) `shouldBe` 2
+
+            it "(3, 3) (2, 1) == 2" $ do
+                distance (3, 3) (2, 1) `shouldBe` 2
+            it "(3, 3) (2, 2) == 1" $ do
+                distance (3, 3) (2, 2) `shouldBe` 1
+            it "(3, 3) (2, 3) == 1" $ do
+                distance (3, 3) (2, 3) `shouldBe` 1
+            it "(3, 3) (2, 4) == 1" $ do
+                distance (3, 3) (2, 4) `shouldBe` 1
+            it "(3, 3) (2, 5) == 2" $ do
+                distance (3, 3) (2, 5) `shouldBe` 2
+
+            it "(3, 3) (3, 1) == 2" $ do
+                distance (3, 3) (3, 1) `shouldBe` 2
+            it "(3, 3) (3, 2) == 1" $ do
+                distance (3, 3) (3, 2) `shouldBe` 1
+            it "(3, 3) (3, 3) == 0" $ do
+                distance (3, 3) (3, 3) `shouldBe` 0
+            it "(3, 3) (3, 4) == 1" $ do
+                distance (3, 3) (3, 4) `shouldBe` 1
+            it "(3, 3) (3, 5) == 2" $ do
+                distance (3, 3) (3, 5) `shouldBe` 2
+
+            it "(3, 3) (4, 1) == 2" $ do
+                distance (3, 3) (4, 1) `shouldBe` 2
+            it "(3, 3) (4, 2) == 1" $ do
+                distance (3, 3) (4, 2) `shouldBe` 1
+            it "(3, 3) (4, 3) == 1" $ do
+                distance (3, 3) (4, 3) `shouldBe` 1
+            it "(3, 3) (4, 4) == 1" $ do
+                distance (3, 3) (4, 4) `shouldBe` 1
+            it "(3, 3) (4, 5) == 2" $ do
+                distance (3, 3) (4, 5) `shouldBe` 2
+
+            it "(3, 3) (5, 1) == 2" $ do
+                distance (3, 3) (5, 1) `shouldBe` 2
+            it "(3, 3) (5, 2) == 2" $ do
+                distance (3, 3) (5, 2) `shouldBe` 2
+            it "(3, 3) (5, 3) == 2" $ do
+                distance (3, 3) (5, 3) `shouldBe` 2
+            it "(3, 3) (5, 4) == 2" $ do
+                distance (3, 3) (5, 4) `shouldBe` 2
+            it "(3, 3) (5, 5) == 2" $ do
+                distance (3, 3) (5, 5) `shouldBe` 2
+
+
