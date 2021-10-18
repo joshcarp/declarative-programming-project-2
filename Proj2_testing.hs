@@ -16,8 +16,7 @@ main =
     testCheckLocation >>
     testToLocation >>
     testDistance >>
-    testFeedback >>
-    testCheckLocationToInt
+    testFeedback
 --    testValidLocations
 
 -- QuickCheck Tests
@@ -29,10 +28,10 @@ checkLocation x y =   elem x ['A' .. 'H']
          === Just (printf "%c%d" x y)
 
 
-testCheckLocationToInt = quickCheck (withMaxSuccess 100 checkLocationInt)
+--testCheckLocationToInt = quickCheck (withMaxSuccess 100 checkLocationInt)
 
-checkLocationInt :: Int -> Property
-checkLocationInt x = x > 0 ==> locationToInt (intToLocation x) === x
+--checkLocationInt :: Int -> Property
+--checkLocationInt x = x > 0 ==> locationToInt (intToLocation x) === x
 
 
 -- Unit Tests
@@ -144,12 +143,3 @@ testDistance = hspec $ do
             it "(3, 3) (5, 5) == 2" $ do
                 distance (3, 3) (5, 5) `shouldBe` 2
 
-
-{-
-def cal_average(num):
-    sum_num = 0
-    for t in num:
-        sum_num = sum_num + t
-    avg = sum_num / len(num)
-    return avg
--}
