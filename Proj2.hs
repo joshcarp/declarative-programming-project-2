@@ -22,9 +22,6 @@ fromLocation (x, y) = (printf "%c%d" (toUpper (chr (ord 'a' + x - 1))) y)
 locationToInt :: Location -> Int
 locationToInt (x, y) = (y * 8) - 8 + x
 
-radius :: Location -> Int -> Set.Set Location
-radius a y = Set.fromList [intToLocation(x) | x <- [1..8*4], (distance (intToLocation x) a) == y]
-
 intToLocation :: Int -> Location
 intToLocation x = ((((x-1) + 8 ) `rem` 8) + 1, ((( x -1 ) + 8) `div` 8))
 
@@ -42,18 +39,19 @@ distance :: (Real a, Real a, Integral b) => (a, a) -> (a, a) -> b
 distance (x1, y1) (x2, y2) = floor( sqrt (realToFrac(((realToFrac x1) - (realToFrac x2))^2 + ((realToFrac y1) - (realToFrac y2))^2)))
 
 validLocations :: Location -> Location -> Set.Set [Location]
-validLocations a b = Set.fromList (combinations [intToLocation y | y <- [locationToInt a .. locationToInt b]] 3)
+validLocations a b = Set.fromList (combinations 3 [intToLocation y | y <- [locationToInt a .. locationToInt b]])
 
 initialGuess :: ([Location],GameState)
 initialGuess = ([intToLocation 1, intToLocation 16, intToLocation 32],  validLocations (mustToLocation "A1") (mustToLocation "H4"))
 
-
 nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
-nextGuess (x, state) (3, 0, 0) = (x, state)
-nextGuess ([x, y, z], state) (a, b, c) = (head (Set.toList foo), foo)
-                                                                where foo = possibleLocations ([x, y, z], state) (a, b, c)
+nextGuess (guess, state) (a, b, c) = (head (Set.toList foo), foo)
+                                                                where foo = possibleLocations (guess, state) (a, b, c)
 
-combinations xs n = filter ((n==).length.nub) (mapM (const xs) [1..n])
+combinations :: Int -> [a] -> [[a]]
+combinations 0 _ = [[]]
+combinations n xs = [ xs !! i : x | i <- [0..(length xs)-1]
+                                  , x <- combinations (n-1) (drop (i+1) xs) ]
 
 possibleLocations :: ([Location],GameState) -> (Int, Int, Int) -> Set.Set [Location]
 possibleLocations ([x, y, z], state) (a, b, c) = Set.fromList [[q, w, e] | [q, w, e] <- Set.toList state, (feedback [q, w, e] [x, y, z]) ==  (a, b, c) ]

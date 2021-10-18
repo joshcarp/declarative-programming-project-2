@@ -9,7 +9,7 @@ import System.Exit
 import Proj2 (Location, toLocation, fromLocation, feedback,
               GameState, initialGuess, nextGuess)
 
-testCase = "C3 F1 F3"
+testCase = "C4 F4 F3"
 
 -- | Main code to test Proj2 implementations within Grok. This will be run with
 -- no command line arguments, so there's no way to specify the target to search
