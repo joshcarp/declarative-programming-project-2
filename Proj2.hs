@@ -17,7 +17,8 @@
 *    were used for optimisation of initial guesses contained in Main2.hs.
 *
 -}
-module Proj2 where
+module Proj2 (Location, toLocation, fromLocation, feedback,
+              GameState, initialGuess, nextGuess, distance) where
 
 import Data.Char
 import Data.List
