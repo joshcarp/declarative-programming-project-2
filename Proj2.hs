@@ -17,7 +17,18 @@
 *    were used for optimisation of initial guesses contained in Main_testing.hs.
 *
 -}
-module Proj2 where
+module Proj2
+  ( Location
+  , toLocation
+  , fromLocation
+  , feedback
+  , GameState
+  , initialGuess
+  , nextGuess
+  , distance
+  , allLocations
+  ) where
+
 import Data.Char
 import Data.List
 import Data.Maybe
