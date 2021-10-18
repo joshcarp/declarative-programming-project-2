@@ -14,20 +14,10 @@
 *    and the existing game state.
 *    Development for this implementation used Test Driven Development (TDD)
 *    and the tests are contained in Proj2_testing.hs with more functions that
-*    were used for optimisation of initial guesses contained in Main2.hs.
+*    were used for optimisation of initial guesses contained in Main_testing.hs.
 *
 -}
-module Proj2
-  ( Location
-  , toLocation
-  , fromLocation
-  , feedback
-  , GameState
-  , initialGuess
-  , nextGuess
-  , distance
-  ) where
-
+module Proj2 where
 import Data.Char
 import Data.List
 import Data.Maybe
@@ -75,7 +65,7 @@ allLocations = combinations 3 [(ord x, y) | x <- ['A' .. 'H'], y <- [1 .. 4]]
 
 -- | initialGuess returns an initial guess and all of
 -- the valid choice combinations.
--- The location was calculated in Main2.hs by calculating
+-- The location was calculated in Main_testing.hs by calculating
 -- every initial guess against a pool of random targets
 -- After 6 hours of computation the location was chosen as
 -- ["F1", "G4", "D2"] with an average of 5.7 choices to get to an answer.

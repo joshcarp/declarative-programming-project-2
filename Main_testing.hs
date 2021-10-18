@@ -7,13 +7,13 @@
 *    Purpose:        Optimisation code for Project 2
 *
 *    This file was used for testing the initial starting guess and
-*    optimising it to an initial guess that would decrease the guesses required overall.
+*    optimising it to an initial guess that would decrease
+*    the guesses required overall.
 *    It was adapted from Main.hs written by Peter Schachte.
 -}
 module Main where
 
 import Data.List
-import qualified Data.Set as Set
 import Proj2
 import System.Exit
 import System.IO.Unsafe
@@ -61,65 +61,34 @@ loop target guess other guesses = do
 showLocations :: [Location] -> String
 showLocations = unwords . (fromLocation <$>)
 
+-- | loop2Start prints out how many choices it took to solve a
+--   puzzle on average with a starting position.
 loop2Start :: [Location] -> IO ()
 loop2Start target = do
   putStrLn $ "Searching for target " ++ showLocations target
   let initial = target
   let a =
-        average
-          (take
-             50
-             (every
-                7
-                (map
-                   (loop2 initial allLocations 1)
-                   (unsafePerformIO (shuffle (allLocations))))))
+        average $
+        take 50 $ map (findChoicesForGame initial allLocations 1) $ allLocations
   printf "%s\n" (show a)
 
---  let l = loop2 guess other 1 target
-allLocations2 = map (loop2Start2) (unsafePerformIO (shuffle (allLocations)))
+-- | allLocations2 maps applies findAverageChoices to allLocations2
+allLocations2 = map findAverageChoices allLocations
 
-loop2Start2 :: Fractional a => [Location] -> ([Location], a)
-loop2Start2 initial =
+-- | findAverageChoices returns the average number of
+--   choices to win a match for a given starting location.
+findAverageChoices :: Fractional a => [Location] -> ([Location], a)
+findAverageChoices initial =
   ( initial
   , (average
-       (take
-          10
-          (every
-             7
-             (map
-                (loop2 initial allLocations 1)
-                (unsafePerformIO (shuffle allLocations)))))))
+       (take 10 (map (findChoicesForGame initial allLocations 1) allLocations))))
 
-every n xs =
-  case drop (n - 1) xs of
-    y:ys -> y : every n ys
-    [] -> []
-
-loop2 :: [Location] -> GameState -> Int -> [Location] -> Int
-loop2 guess state guesses target
+-- | findChoicesForGame takes a starting guess and a state and returns the
+--   number of guesses it took to win the game.
+findChoicesForGame :: [Location] -> GameState -> Int -> [Location] -> Int
+findChoicesForGame guess state guesses target
   | answer == (3, 0, 0) = guesses
-  | otherwise = loop2 guess2 state2 (guesses + 1) target
+  | otherwise = findChoicesForGame guess2 state2 (guesses + 1) target
   where
     answer = feedback target guess
     (guess2, state2) = nextGuess (guess, state) answer
-
-shuffle :: (Eq a) => [a] -> IO [a]
-shuffle [] = return []
-shuffle ls = do
-  x <- pick ls
-  let y = remove x ls
-  xs <- shuffle y
-  return (x : xs)
-
-remove :: (Eq a) => a -> [a] -> [a]
-remove _ [] = []
-remove r (x:xs) =
-  if x == r
-    then xs
-    else x : remove r xs
-
-pick :: [a] -> IO a
-pick xs = do
-  n <- randomRIO (0, length xs - 1)
-  return $ xs !! n
