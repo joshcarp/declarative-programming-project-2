@@ -1,4 +1,5 @@
-{- Code for Project 2, Semester 2, 2021
+{-
+*    Code for Project 2, Semester 2, 2021
 *    Author:         Joshua Carpeggiani
 *    E-mail:         jcarpeggiani@student.unimelb.edu.au
 *    Student ID:     999380
@@ -11,6 +12,9 @@
 *    positions are calculated for that feedback with those choices.
 *    The game state is then set to the intersection of these possible locations
 *    and the existing game state.
+*    Development for this implementation used Test Driven Development (TDD)
+*    and the tests are contained in Proj2_testing.hs with more functions that
+*    were used for optimisation of initial guesses contained in Main2.hs.
 *
 -}
 module Proj2 where
@@ -20,13 +24,18 @@ import Data.List
 import Data.Maybe
 import Text.Printf
 
+-- | Location represents a cartesian coordinate.
 type Location = (Int, Int)
 
+-- | GameState represents a list of Locations;
+--   a list of valid choices left in the game.
 type GameState = [[Location]]
 
 -- | toLocation returns a Maybe Location if the string is a
 --   valid Location and Nothing if it's not a valid Location.
---   Example
+--   The first element of loc is just the ascii ord of the character
+--   as this makes calculations straight forward.
+--   Example:
 --   > toLocation "A4"
 --   Just (65,4)
 toLocation :: String -> Maybe Location
@@ -53,7 +62,7 @@ feedback x y = (minDistance x y 0, minDistance x y 1, minDistance x y 2)
 --   > allLocations
 --   [[(65,1),(65,2),(65,3)],[(65,1),(65,2),(65,4)]...]
 allLocations :: [[Location]]
-allLocations = combinations 3 [(ord (x), y) | x <- ['A' .. 'H'], y <- [1 .. 4]]
+allLocations = combinations 3 [(ord x, y) | x <- ['A' .. 'H'], y <- [1 .. 4]]
 
 -- | initialGuess returns an initial guess and all of
 -- the valid choice combinations.
@@ -93,7 +102,6 @@ nextGuess (guess, state) results = (head newState, newState)
   where
     newState = [choice | choice <- state, feedback choice guess == results]
 
--- List Functions --
 -- | combinations returns the combinations of length n from the list xs.
 --   Example:
 --   > combinations 2 [1, 2, 3]
@@ -112,11 +120,11 @@ combinations n xs =
 --   2
 distance :: (Real a, Integral b) => (a, a) -> (a, a) -> b
 distance (x1, y1) (x2, y2) =
-  floor
-    (sqrt
-       (realToFrac
-          (((realToFrac x1) - (realToFrac x2)) ^ 2 +
-           ((realToFrac y1) - (realToFrac y2)) ^ 2)))
+  floor $
+  sqrt $
+  realToFrac $
+  ((realToFrac x1) - (realToFrac x2)) ^ 2 +
+  ((realToFrac y1) - (realToFrac y2)) ^ 2
 
 -- | minDistance returns the minimum distance between
 --   every tuple in the first list to all the points in the second list.
@@ -126,4 +134,4 @@ distance (x1, y1) (x2, y2) =
 minDistance :: (Real a, Integral t, Num p) => [(a, a)] -> [(a, a)] -> t -> p
 minDistance _ [] _ = 0
 minDistance a (b:bs) n =
-  sum [1 | minimum ([distance c b | c <- a]) == n] + minDistance a bs n
+  sum [1 | minimum [distance c b | c <- a] == n] + minDistance a bs n
