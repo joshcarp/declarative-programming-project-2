@@ -38,11 +38,13 @@ allDistances a b = [distance c a | c <- b]
 distance :: (Real a, Real a, Integral b) => (a, a) -> (a, a) -> b
 distance (x1, y1) (x2, y2) = floor( sqrt (realToFrac(((realToFrac x1) - (realToFrac x2))^2 + ((realToFrac y1) - (realToFrac y2))^2)))
 
-validLocations :: Location -> Location -> Set.Set [Location]
-validLocations a b = Set.fromList (combinations 3 [intToLocation y | y <- [locationToInt a .. locationToInt b]])
+validLocations :: Set.Set [Location]
+validLocations = Set.fromList (combinations 3 [intToLocation y | y <- [1.. 8*4]])
+
+--validLocations2 = Set.fromList (combinations 3 [ (printf "%c%d" x y) :: String | x <- ['A'..'H'], y <- [1..4] :: Int])
 
 initialGuess :: ([Location],GameState)
-initialGuess = ([intToLocation 1, intToLocation 16, intToLocation 32],  validLocations (mustToLocation "A1") (mustToLocation "H4"))
+initialGuess = ([(6,1),(8,3),(5,4)],  validLocations)
 
 nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
 nextGuess (guess, state) (a, b, c) = (head (Set.toList foo), foo)
