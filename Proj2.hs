@@ -79,7 +79,7 @@ allLocations = combinations 3 [(ord x, y) | x <- ['A' .. 'H'], y <- [1 .. 4]]
 -- The location was calculated in Main_testing.hs by calculating
 -- every initial guess against a pool of random targets
 -- After 6 hours of computation the location was chosen as
--- ["F1", "G4", "D2"] with an average of 5.7 choices to get to an answer.
+-- ["D2", "F1", "G4"] with an average of 5.7 choices to get to an answer.
 -- +---+---+---+---+---+---+---+---+---+---+
 -- |   | A | B | C | D | E | F | H | G |   |
 -- +---+---+---+---+---+---+---+---+---+---+
@@ -96,7 +96,7 @@ allLocations = combinations 3 [(ord x, y) | x <- ['A' .. 'H'], y <- [1 .. 4]]
 --    ([(70,1),(71,4),(68,2)], [[(65,1),(65,2),(65,3)]..])
 initialGuess :: ([Location], GameState)
 initialGuess =
-  ([fromJust (toLocation x) | x <- ["F1", "G4", "D2"]], allLocations)
+  ([fromJust (toLocation x) | x <- ["D2", "F1", "G4"]], allLocations)
 
 -- | nextGuess filters out the possible combinations in GameState
 --   by calculating all the possible places
