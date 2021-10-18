@@ -1,5 +1,6 @@
 module Proj2 where
 import Data.Char
+import Data.List
 import Text.Printf
 import qualified Data.Set as Set
 
@@ -73,23 +74,29 @@ initialGuess = ([(1, 1), (1, 2), (1, 3)],  GameState{
 
 nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
 nextGuess (x, state) (3, 0, 0) = (x, state)
-nextGuess ([x, y, z], state) (0, b, c) = ([x, y, z], GameState{
-                                                                valid = Set.difference (valid state) (Set.fromList [x, y, z]),
-                                                                lastGuess = [x, y, z],
+nextGuess ([x, y, z], state) (0, b, c) = (guess, GameState  {
+                                                                valid = foo,
+                                                                lastGuess = guess,
                                                                 lastFeedback = (0, b, c)
                                                                 })
+                                                                where
+                                                                    foo = encorporateFeedback ([x, y, z], (valid state)) (0, b, c)
+                                                                    guess = Set.toList (Set.take 3 foo)
+--nextGuess ([x, y, z], state) (a, b, c) = (guess, GameState  {
+--                                                                valid = foo,
+--                                                                lastGuess = guess,
+--                                                                lastFeedback = (a, b, c)
+--                                                                })
+--                                                                where
+--                                                                    foo = valid state
+--                                                                    guess = Set.toList (Set.take 3 (Set.difference foo (Set.fromList [x, y, z])))
 
 
-encorporateFeedback :: ([Location],GameState) -> (Int,Int,Int) -> GameState
-encorporateFeedback (locs, state) (0, 0, 0) = GameState{
-                                                           valid = Set.difference (Set.difference (Set.difference (valid state) (radii locs 0)) (radii locs 1)) (radii locs 2),
-                                                           lastGuess = locs,
-                                                           lastFeedback = (0, 0, 0)
-                                                           }
+
+encorporateFeedback :: ([Location], Set.Set Location) -> (Int,Int,Int) -> Set.Set Location
+encorporateFeedback (locs, state) (0, b, c) = Set.difference state (radii locs 0)
+
 
 radii :: [Location] -> Int -> Set.Set Location
 radii [] y = Set.empty
 radii (x:xs) y = Set.union (radius x y) (radii xs y)
-
-
---findLocation :: ([Location],GameState) -> (Int, Int, Int) ->
