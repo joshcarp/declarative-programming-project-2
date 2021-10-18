@@ -13,6 +13,7 @@ import qualified Data.Set as Set
 import System.IO.Unsafe
 import Data.List
 
+
 average xs = realToFrac (sum xs) / genericLength xs
 
 testCase = "C3 F1 F3"
@@ -68,19 +69,16 @@ loop2Start :: [Location] -> IO ()
 loop2Start target = do
   putStrLn $ "Searching for target " ++ showLocations target
 --  let l = loop2 guess other 1 target
-  let other = validLocations
   let initial = target
-  let a = average (take 10 (every 7 (map (loop2 initial other 1) (unsafePerformIO (shuffle (Set.toList other))))))
+  let a = average (take 50 (every 7 (map (loop2 initial allLocations 1) (unsafePerformIO (shuffle (allLocations))))))
   printf "%s\n" (show a)
 
-allLocations = map (loop2Start2) (unsafePerformIO (shuffle (Set.toList (validLocations ))))
+allLocations2 = map (loop2Start2) (unsafePerformIO (shuffle (allLocations)))
 
 
 
 loop2Start2 :: Fractional a => [Location] -> ([Location], a)
-loop2Start2 initial = (initial, (average (take 10 (every 7 (map (loop2 initial other 1) (unsafePerformIO (shuffle (Set.toList other))))))))
-                     where
-                       other = validLocations
+loop2Start2 initial = (initial, (average (take 10 (every 7 (map (loop2 initial allLocations 1) (unsafePerformIO (shuffle  allLocations)))))))
 
 
 --average :: [Int] -> Real

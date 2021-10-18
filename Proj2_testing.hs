@@ -68,7 +68,7 @@ testFeedback = hspec $ do
 testToLocation = hspec $ do
           describe "testToLocation" $ do
             it "toLocation" $ do
-              (toLocation "a2") `shouldBe` Just ((1, 2) :: Location)
+              (toLocation "A2") `shouldBe` Just ((65,2) :: Location)
 
 {-
 Grid for distance tests
