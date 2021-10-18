@@ -45,7 +45,7 @@ validLocations :: Location -> Location -> Set.Set [Location]
 validLocations a b = Set.fromList (combinations [intToLocation y | y <- [locationToInt a .. locationToInt b]] 3)
 
 initialGuess :: ([Location],GameState)
-initialGuess = ([(1, 1), (1, 2), (1, 3)],  validLocations (mustToLocation "A1") (mustToLocation "H4"))
+initialGuess = ([intToLocation 1, intToLocation 16, intToLocation 32],  validLocations (mustToLocation "A1") (mustToLocation "H4"))
 
 
 nextGuess :: ([Location],GameState) -> (Int,Int,Int) -> ([Location],GameState)
